@@ -1,0 +1,35 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.Statement;
+
+
+public class Test_Joueur {
+	public static void main(String[] args) {      
+	    try {
+	      Class.forName("org.postgresql.Driver"); // charge le driver
+	      System.out.println("Driver O.K. !"); // affiche "Driver OK !" si le chargement du driver est ok
+
+	      String url = "jdbc:postgresql://localhost:5432/Projet_NIM"; // URL de la base
+	      String user = "postgres";  // Nom de la base
+	      String passwd = "3210Azerty"; // mot de passe de la base
+
+	      Connection conn = DriverManager.getConnection(url, user, passwd);// connecte la base à l'application mais le transfert de donnée n'est pas encore permis
+	      Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+	      System.out.println("Connexion O.K !");     // affiche "Connexion O.K.!" si le lien entre la base et l'appli est faite 
+
+	      state.executeUpdate("INSERT INTO joueurs VALUES(9, 666,'Victime')");  // ajoute un joueur
+	      System.out.println("Joueur ajouté!");
+	      
+	      state.executeUpdate("DELETE FROM joueurs WHERE pseudo_joueur = 'Victime'"); // supprime un joueur
+	      System.out.println("Joueur Banni!");
+	      state.close();
+	    }
+	    catch (Exception e) { // leve une exception en cas d'erreur
+		      e.printStackTrace();		      
+		      
+	    }
+	}
+}
